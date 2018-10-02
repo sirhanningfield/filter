@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->float('price');
-            $table->bool('is_available');
+            $table->boolean('is_available');
             $table->string('category');
             $table->timestamps();
         });
