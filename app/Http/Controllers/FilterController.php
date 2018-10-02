@@ -32,25 +32,25 @@ class FilterController extends Controller
     }
 
     // write a function for the filter
-    public function name($value, $query)
+    private function name($value, $query)
     {
         return $query->where('name', 'LIKE', '%'.$value.'%');
         
     }
 
-    public function category($value, $query)
+    private function category($value, $query)
     {
         return $query->where('category', $value);
         
     }
 
-    public function price($value, $query)
+    private function price($value, $query)
     {
         return $query->where('price', $value);
         
     }
 
-    public function available($value, $query)
+    private function available($value, $query)
     {
         return $query->where('available', $value);
     }
