@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Product;
 
@@ -11,19 +12,27 @@ class FilterController extends Controller
     //
     public function filter(Request $request)
     {
-    	$productQuery = (new Product)->newQuery();
-        $query = $this->buildQuery($request,$productQuery);
-        return $this->getQueryResult($query);
+        try {
+            $productQuery = (new Product)->newQuery();
+            $query = $this->buildQuery($request,$productQuery);
+            return $this->getQueryResult($query);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), 1);
+        }
     }
 
     private function buildQuery($request, $query)
-    {
+    {  
         foreach ($request->all() as $param => $value) {
+            $param = studly_case($param);
             if (method_exists ( $this , $param)) {
                 $query = $this->{$param}($value, $query);
+            }else{
+                throw new Exception('filter method "'.$param.'" does not exist.' , 1);
+                
             }
         }
-        return $query;
+        return $query;    
     }
 
     private function getQueryResult($query)
@@ -50,7 +59,7 @@ class FilterController extends Controller
         
     }
 
-    private function available($value, $query)
+    private function isAvailable($value, $query)
     {
         return $query->where('available', $value);
     }
