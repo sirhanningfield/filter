@@ -27,9 +27,6 @@ class FilterController extends Controller
             $param = studly_case($param);
             if (method_exists ( $this , $param)) {
                 $query = $this->{$param}($value, $query);
-            }else{
-                throw new Exception('filter method "'.$param.'" does not exist.' , 1);
-                
             }
         }
         return $query;    
